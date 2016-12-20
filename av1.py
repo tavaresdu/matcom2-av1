@@ -1,25 +1,33 @@
 from math import *
 import sys
 import csv
+
 name = sys.argv[0]
 
 def main(algorithm, filename):
-    pass
     with open(filename, 'r') as csvfile:
-        rows = csv.reader(filename, delimiter=';')
-        func = lambda x: eval(rows[0])
-        algorithm(rows[0], rows[1], rows[2], rows[3])
+        rows = csv.reader(csvfile, delimiter=';')
+        function = lambda x: eval(rows[0])
+        algorithm(function, float(rows[1]), float(rows[2]), float(rows[3]))
 
-def trapezio(f, a, b, i):
+def print_table(header, rows):
+    print(tabulate(rows, headers=header, tablefmt='grid'))
+
+def trapezio(f, a, b, q):
+    rows = list()
+    h = (b - a) / i
+
+    for i in range(q):
+        x = a + (h)
+
+
+def simpson_1_3(f, a, b, q):
     pass
 
-def simpson_1_3():
+def simpson_3_8(f, a, b, q):
     pass
 
-def simpson_3_8():
-    pass
-
-def romberg():
+def romberg(f, a, b, q):
     pass
 
 if __name__ == '__main__':
