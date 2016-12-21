@@ -19,19 +19,21 @@ def main(algorithm, filename):
 def print_table(header, rows):
     print(tabulate(rows, headers=header, tablefmt='grid'))
 
-def trapezio(f, a, b, quantity, *args):
+def trapezio(f, a, b, n):
+    n = int(n)
     rows = list()
     total_area = int()
-    h = (b - a) / quantity
+    h = (b - a) / n
     total_result = integrate.quad(f, a, b)[0]
 
     header = ['Trapézio', 'Área (Trapézio)', 'Valor Real', 'Erro (%)']
 
-    for i in range(int(quantity)):
+    for i in range(n):
         x0 = a + (h * i)
         x1 = a + (h * (i + 1))
         result_i = integrate.quad(f, x0, x1)[0]
         area_i = (f(x0) + f(x1)) * h / 2
+        print(f(x1))
         error_i = (result_i - area_i) / result_i * 100
         rows.append([i+1, area_i, result_i, error_i])
         total_area += area_i
@@ -41,16 +43,35 @@ def trapezio(f, a, b, quantity, *args):
 
     print_table(header, rows)
 
-def simpson_1_3(f, a, b, *args):
+def simpson_1_3(f, a, b, n):
+    n = int(n)
     header = ['Área (Parábola)', 'Valor Real', 'Erro (%)']
-
     result = integrate.quad(f, a, b)[0]
-    h = (b - a) / 2
-    area_p = (f(a) + 4 * f(a + h) + f(b)) * h / 3
-    error = (result - area_p) / result * 100
-    row = [[area_p, result, error]]
 
-    print_table(header, row)
+    if n == 1:
+        h = (b - a) / 2
+        area_p = (f(a) + 4 * f(a + h) + f(b)) * h / 3
+        error = (result - area_p) / result * 100
+        row = [[area_p, result, error]]
+        print_table(header, row)
+    elif n % 2 == 0:
+        odd = float()
+        even = float()
+        h = (b - a) / n
+
+        for i in range(1, n):
+            x = a + h * i
+            if i % 2 == 1:
+                odd += f(x)
+            else:
+                even += f(x)
+
+        area_p = (b - a) * (f(a) + (4 * odd) + (2 * even) + f(b)) / (3 * n)
+        error = (result - area_p) / result * 100
+        row = [[area_p, result, error]]
+        print_table(header, row)
+    else:
+        print('A regra múltipla de Simpsom não suporta valores ímpares para N')
 
 def simpson_3_8(f, a, b, *args):
     header = ['Área (Parábola)', 'Valor Real', 'Erro (%)']
