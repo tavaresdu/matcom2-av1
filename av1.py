@@ -8,7 +8,7 @@ name = sys.argv[0]
 
 def main(algorithm, filename):
     with open(filename, 'r') as csvfile:
-        rows = list(csv.reader(csvfile, delimiter=';'))
+        rows = list(csv.reader(csvfile, delimiter=','))
         for row in rows:
             equation = row[0]
             row[0] = lambda x: eval(equation)
